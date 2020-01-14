@@ -16,7 +16,7 @@ _time_intervals = {
 _time_int_regex = {}
 
 for _name, _interval in _time_intervals.items():
-    _time_int_regex[re.compile(r'(\d+)\s+' + _name)] = _interval
+    _time_int_regex[re.compile(rf'(?a:(\d+))\s*{_name}\b', flags=re.IGNORECASE)] = _interval
 
 
 def parse(string):
