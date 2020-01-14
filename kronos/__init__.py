@@ -21,11 +21,12 @@ for _name, _interval in _time_intervals.items():
 
 def parse(string):
     result_seconds = 0
+    match = None
 
     for regex, interval_class in _time_int_regex.items():
         for match in regex.finditer(string):
             num = int(match.group(1))
             result_seconds += interval_class(num).get_seconds()
 
-    return result_seconds
+    return result_seconds if match else None
 

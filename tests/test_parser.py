@@ -27,18 +27,24 @@ def test_repeated_intervals_string():
 
 def test_empty_string():
     string = ""
-    wanted_result = 0
+    wanted_result = None
     assert kronos.parse(string) == wanted_result
 
 
 def test_no_time_interval_string():
     string = "there's something in here. No time intervals though!"
-    wanted_result = 0
+    wanted_result = None
     assert kronos.parse(string) == wanted_result
 
 
 def test_name_but_no_number_string():
     string = "Wait a sec, there is no time interval!"
+    wanted_result = None
+    assert kronos.parse(string) == wanted_result
+
+
+def test_zero_seconds():
+    string = "0 sec"
     wanted_result = 0
     assert kronos.parse(string) == wanted_result
 
