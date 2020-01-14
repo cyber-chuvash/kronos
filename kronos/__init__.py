@@ -1,21 +1,11 @@
 import re
 
 from kronos import time_intervals
-
-
-_time_intervals = {
-    r'sec': time_intervals.Seconds,
-    r'min': time_intervals.Minutes,
-    r'h': time_intervals.Hours,
-    r'd': time_intervals.Days,
-    r'w': time_intervals.Weeks,
-    r'M': time_intervals.Months,
-    r'y': time_intervals.Years,
-}
+from kronos.language import english
 
 _time_int_regex = {}
 
-for _name, _interval in _time_intervals.items():
+for _name, _interval in english.interval_names.items():
     _time_int_regex[re.compile(rf'(?a:(\d+))\s*{_name}\b', flags=re.IGNORECASE)] = _interval
 
 
