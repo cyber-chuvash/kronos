@@ -8,6 +8,7 @@ _time_intervals = {
     r'min': time_intervals.Minutes,
     r'h': time_intervals.Hours,
     r'd': time_intervals.Days,
+    r'w': time_intervals.Weeks,
     r'M': time_intervals.Months,
     r'y': time_intervals.Years,
 }
