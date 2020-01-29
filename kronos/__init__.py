@@ -3,20 +3,40 @@ import re
 from kronos import time_intervals
 from kronos.language import english
 
-_time_int_regex = {}
 
-for _name, _interval in english.interval_names.items():
-    _time_int_regex[re.compile(rf'(?a:(\d+))\s*{_name}\b', flags=re.IGNORECASE)] = _interval
+class Parser:
+    def __init__(self, langs=None):
+        # English language as the default
+        if langs is None:
+            langs = [english]
+
+        elif not isinstance(langs, (list, set, tuple)):
+            langs = [langs]
+
+        self._time_interval_regex = {}
+
+        for lang in langs:
+            for name, interval in lang.interval_names.items():
+                regex = re.compile(rf'(?a:(\d+))\s*{name}\b', flags=re.IGNORECASE)
+                self._time_interval_regex[regex] = interval
+
+    def parse(self, string):
+        result_seconds = 0
+        match = None
+
+        for regex, interval_class in self._time_interval_regex.items():
+            for match in regex.finditer(string):
+                num = int(match.group(1))
+                result_seconds += interval_class(num).get_seconds()
+
+        return result_seconds if match else None
 
 
-def parse(string):
-    result_seconds = 0
-    match = None
+_default_parser = Parser()
 
-    for regex, interval_class in _time_int_regex.items():
-        for match in regex.finditer(string):
-            num = int(match.group(1))
-            result_seconds += interval_class(num).get_seconds()
 
-    return result_seconds if match else None
-
+def parse(string, langs=None):
+    if langs is None:
+        return _default_parser.parse(string)
+    else:
+        return Parser(langs=langs).parse(string)
